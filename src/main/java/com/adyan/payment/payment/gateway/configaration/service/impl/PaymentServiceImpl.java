@@ -1,5 +1,7 @@
 package com.adyan.payment.payment.gateway.configaration.service.impl;
 
+import com.adyan.payment.payment.gateway.configaration.entity.PaymentMethods;
+import com.adyan.payment.payment.gateway.configaration.entity.PaymentMethodsRequest;
 import com.adyan.payment.payment.gateway.configaration.entity.SessionRequest;
 import com.adyan.payment.payment.gateway.configaration.helper.CustomPaymentHelper;
 import com.adyan.payment.payment.gateway.configaration.service.PaymentService;
@@ -31,4 +33,12 @@ public class PaymentServiceImpl implements PaymentService {
         entity.setMerchantAccount(merchantAccount);
         return restTemplateService.postForEntity(url + "/sessions", entity, customPaymentHelper.createHttpHeader(),Object.class);
     }
+
+    @Override
+    public PaymentMethods getPaymentMethods(PaymentMethodsRequest paymentMethodsRequest){
+        paymentMethodsRequest.setMerchantAccount(merchantAccount);
+        return  restTemplateService.postForEntity(url + "/paymentMethods",
+                paymentMethodsRequest,customPaymentHelper.createHttpHeader(), PaymentMethods.class).getBody();
+    }
+
 }

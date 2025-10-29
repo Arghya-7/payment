@@ -1,5 +1,7 @@
 package com.adyan.payment.payment.gateway.configaration.controller;
 
+import com.adyan.payment.payment.gateway.configaration.entity.PaymentMethods;
+import com.adyan.payment.payment.gateway.configaration.entity.PaymentMethodsRequest;
 import com.adyan.payment.payment.gateway.configaration.entity.SessionRequest;
 import com.adyan.payment.payment.gateway.configaration.service.PaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,5 +20,10 @@ public class CustomApiController {
     @PostMapping("/session")
     public Object createSession(@RequestBody SessionRequest sessionRequest){
         return paymentService.createSession(sessionRequest);
+    }
+
+    @PostMapping("/payment-types")
+    public PaymentMethods getPaymentMethods(@RequestBody PaymentMethodsRequest paymentMethodsRequest){
+        return paymentService.getPaymentMethods(paymentMethodsRequest);
     }
 }

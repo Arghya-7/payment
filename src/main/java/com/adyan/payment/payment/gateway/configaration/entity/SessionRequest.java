@@ -2,6 +2,8 @@ package com.adyan.payment.payment.gateway.configaration.entity;
 
 import lombok.*;
 
+import java.util.List;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -15,7 +17,7 @@ public class SessionRequest {
     private String shopperReference;
     private String shopperEmail;
     private String returnUrl;
-
+    private List<String> allowedPaymentMethods;
     public String getReference() {
         return reference;
     }
@@ -72,6 +74,14 @@ public class SessionRequest {
         this.returnUrl = returnUrl;
     }
 
+    public List<String> getAllowedPaymentMethods() {
+        return allowedPaymentMethods;
+    }
+
+    public void setAllowedPaymentMethods(List<String> allowedPaymentMethods) {
+        this.allowedPaymentMethods = allowedPaymentMethods;
+    }
+
     @Override
     public String toString() {
         return "SessionRequest{" +
@@ -82,6 +92,7 @@ public class SessionRequest {
                 ", shopperReference='" + shopperReference + '\'' +
                 ", shopperEmail='" + shopperEmail + '\'' +
                 ", returnUrl='" + returnUrl + '\'' +
+                ", allowedPaymentMethods=" + allowedPaymentMethods +
                 '}';
     }
 }

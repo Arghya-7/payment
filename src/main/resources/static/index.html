@@ -3,89 +3,87 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Payment Request Form</title>
+  <title>Dropdown from API</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #f0f2f5;
+      padding: 20px;
     }
-    form {
-      background: white;
-      padding: 30px;
-      border-radius: 12px;
-      width: 400px;
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-    }
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    label {
-      font-weight: bold;
-      margin-top: 10px;
-      display: block;
-    }
-    input {
-      width: 100%;
+    select, button {
       padding: 8px;
-      margin-top: 5px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    button {
-      margin-top: 20px;
-      padding: 10px 15px;
-      background-color: #007bff;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      width: 100%;
       font-size: 16px;
-    }
-    button:hover {
-      background-color: #0056b3;
+      border-radius: 5px;
+      margin-top: 10px;
     }
   </style>
-  <script src="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/5.48.0/adyen.js"></script>
-  <link rel="stylesheet" href="https://checkoutshopper-test.adyen.com/checkoutshopper/sdk/5.48.0/adyen.css"/>
 </head>
 <body>
-  <div id="dropin-container"></div>
-  <form id="paymentForm">
-    <h2>Create Payment Request</h2>
+  <h3>Select Payment Method</h3>
 
-    <label for="reference">Reference</label>
-    <input type="text" id="reference" name="reference" value="ORDER_1234" />
+  <select id="paymentMethodsDropdown">
+    <option value="">Loading...</option>
+  </select>
 
-    <label for="currency">Currency</label>
-    <input type="text" id="currency" name="amount.currency" value="INR" />
+  <button id="confirmBtn">Confirm Selection</button>
 
-    <label for="value">Amount Value</label>
-    <input type="number" id="value" name="amount.value" value="100" />
+  <p id="selectedValue"></p>
 
-    <label for="countryCode">Country Code</label>
-    <input type="text" id="countryCode" name="countryCode" value="IN" />
+  <script>
+    const apiUrl = "http://localhost:8001/api/adyan-payment/payment-types";
 
-    <label for="merchantAccount">Merchant Account</label>
-    <input type="text" id="merchantAccount" name="merchantAccount" value="TCSAccount984ECOM" />
+    const dropdown = document.getElementById("paymentMethodsDropdown");
+    const selectedValue = document.getElementById("selectedValue");
+    const confirmBtn = document.getElementById("confirmBtn");
 
-    <label for="shopperReference">Shopper Reference</label>
-    <input type="text" id="shopperReference" name="shopperReference" value="arghyadey639" />
+    // Step 1️⃣ — Load options dynamically
+    async function loadPaymentMethods() {
+      try {
+        const apiResponse = await fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                merchantAccount: "TCSAccount984ECOM",
+                countryCode: "IN",
+                channel: "Web", 
+                shopperLocale: "en-IN"
+            })
+        });
+        const response = await apiResponse.json();
+        const data = response.paymentMethods;
 
-    <label for="shopperEmail">Shopper Email</label>
-    <input type="email" id="shopperEmail" name="shopperEmail" value="arghyadey639@email.com" />
+        dropdown.innerHTML = '<option value="">Select a method</option>';
+        data.forEach(method => {
+          const option = document.createElement("option");
+          option.name = method.name;
+          option.value  = method.type;
+          option.textContent = method.name;
+          dropdown.appendChild(option);
+        });
+      } catch (error) {
+        console.error("Error loading payment methods:", error);
+        dropdown.innerHTML = '<option value="">Failed to load</option>';
+      }
+    }
 
-    <label for="returnUrl">Return URL</label>
-    <input type="url" id="returnUrl" name="returnUrl" value="https://localhost8080/payment" />
+    loadPaymentMethods();
 
-    <button type="submit">Submit</button>
-  </form>
-  <script src="script.js"></script>
+    // Step 2️⃣ — Track selection immediately
+    dropdown.addEventListener("change", () => {
+      const selectedOption = dropdown.options[dropdown.selectedIndex];
+      console.log("User selected:", selectedOption.textContent, selectedOption.value);
+      selectedValue.textContent = `You selected: ${selectedOption.name})`;
+      window.location.href = `payment.html?method=${encodeURIComponent(selectedOption.value)}`;
+    });
+
+    // Step 3️⃣ — Or use a button to confirm the chosen option
+    confirmBtn.addEventListener("click", () => {
+      const selectedOption = dropdown.options[dropdown.selectedIndex];
+      if (selectedOption.value === "") {
+        alert("Please select a payment method first!");
+        return;
+      }
+      alert(`Confirmed: ${selectedOption.textContent} (${selectedOption.value})`);
+    });
+  </script>
 </body>
 </html>

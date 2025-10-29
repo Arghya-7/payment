@@ -1,15 +1,19 @@
+const paymentOption = null;
+
 document.addEventListener("DOMContentLoaded", () => {
     const form = document.getElementById("paymentForm");
   
     form.addEventListener("submit", async function (event) {
       event.preventDefault();
-  
+      const urlParams = new URLSearchParams(window.location.search);
+      const method = urlParams.get("method");
       const formData = {
         reference: document.getElementById("reference").value,
         amount: {
           currency: document.getElementById("currency").value,
           value: parseInt(document.getElementById("value").value)
         },
+        allowedPaymentMethods: [method],
         countryCode: document.getElementById("countryCode").value,
         merchantAccount: document.getElementById("merchantAccount").value,
         shopperReference: document.getElementById("shopperReference").value,
