@@ -35,10 +35,25 @@ document.addEventListener("DOMContentLoaded", () => {
         environment: "test",
         clientKey: "test_QWAF47MCW5HUFFZIPBWAS72J4AITXN7M",
         session : session,
-        onPaymentCompleted: (result, component) => {
+        onPaymentCompleted: async (result, component) => {
           console.log(result);
-          pspId = result.pspReference;
-          console.log("PSP Reference:", result.pspReference);
+          // const adyanPaymentReaultData = await fetch(`https://checkout-test.adyen.com/v71/sessions/${session.id}?sessionResult=${result.sessionResult}`, {
+          //   method: "GET",
+          //     headers: {
+          //     'Content-Type': 'application/json',
+          //     'x-api-key': 'AQEvhmfxK4LGbRNDw0m/n3Q5qf3VfKh+LJBJV3BY0iHzyp79nlTRS0WfNNR6AZcrUasQwV1bDb7kfNy1WIxIIkxgBw==-PgMyhRwzBKY/BpOmnl/wdQ51xvSuOJQpovmko11pvPQ=-i1iW*a::ZAk]Vv&d4]H'
+          //   }
+          // })
+          const paymentResult = await fetch("http://localhost:8001/api/adyan-payment/get-payment-details", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id: session.id,
+              sessionResult : result.sessionResult
+            })
+          });
+          const paymentResultJson =  await paymentResult.json();
+          window.location.href = `result.html?status=${encodeURIComponent(paymentResultJson.payments.resultCode)}`;
         },
         onError: (error) => console.error("Payment Error:", error),
       });
