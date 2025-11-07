@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.adyan.payment</groupId>
-	<artifactId>payment-gateway-configaration</artifactId>
+	<artifactId>payment</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>For-payment-gateway-configaration</name>
 	<description>For payment gateway integration</description>
