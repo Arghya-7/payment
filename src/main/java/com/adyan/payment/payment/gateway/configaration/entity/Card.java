@@ -1,0 +1,54 @@
+package com.adyan.payment.payment.gateway.configaration.entity;
+
+import lombok.*;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
+public class Card {
+    private String number;
+    private String expiryMonth;
+    private String expiryYear;
+    private String cvc;
+    private String holderName;
+
+    public String getNumber() {
+        return number;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
+    public String getExpiryMonth() {
+        return expiryMonth;
+    }
+
+    public void setExpiryMonth(String expiryMonth) {
+        this.expiryMonth = expiryMonth;
+    }
+
+    public String getExpiryYear() {
+        return expiryYear;
+    }
+
+    public void setExpiryYear(String expiryYear) {
+        this.expiryYear = expiryYear;
+    }
+
+    public String getCvc() {
+        return cvc;
+    }
+
+    public void setCvc(String cvc) {
+        this.cvc = cvc;
+    }
+
+    public String getHolderName() {
+        return holderName;
+    }
+
+    public void setHolderName(String holderName) {
+        this.holderName = holderName;
+    }
+}
