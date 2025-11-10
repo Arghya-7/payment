@@ -1,6 +1,7 @@
 package com.adyan.payment.payment.gateway.configaration.controller;
 
 import com.adyan.payment.payment.gateway.configaration.entity.CardPaymentEntity;
+import com.adyan.payment.payment.gateway.configaration.entity.EncryptedCardPaymentEntity;
 import com.adyan.payment.payment.gateway.configaration.service.CardPaymentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +21,13 @@ public class CardPaymentController {
         this.cardPaymentService = cardPaymentService;
     }
 
-    @PostMapping("/pay")
+    @PostMapping("/unencrypted-pay")
     public ResponseEntity<Object> pay(@RequestBody CardPaymentEntity cardPaymentEntity){
         return cardPaymentService.cardPayment(cardPaymentEntity);
     }
 
+    @PostMapping("/encrypted-payment")
+    public ResponseEntity<Object> pay(@RequestBody EncryptedCardPaymentEntity encryptedCardPaymentEntity){
+        return cardPaymentService.encryptedCardPayment(encryptedCardPaymentEntity);
+    }
 }
