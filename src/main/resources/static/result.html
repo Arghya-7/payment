@@ -13,9 +13,11 @@
         const urlParams = new URLSearchParams(window.location.search);
         const status = urlParams.get("status");
         if(status === "Authorised"){
-            document.getElementById("paymentStatusId").innerHTML = "Success";
+            document.getElementById("paymentStatusId").innerHTML = "Payment Success";
+            document.getElementById("paymentStatusId").style.color = "green";
         } else {
-            document.getElementById("paymentStatusId").innerHTML = "Failure";
+            document.getElementById("paymentStatusId").innerHTML = "Payment Failed";
+            document.getElementById("paymentStatusId").style.color = "red";
         }
         
     </script>
